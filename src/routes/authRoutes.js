@@ -1,10 +1,9 @@
 const express = require('express');
-const authController = require('../controllers/authController');
+const { request, complete } = require('../controllers/otp_login/login');
 
 const router = express.Router();
 
-// Define routes for user authentication
-router.post('/register', authController.register);
-router.post('/login', authController.login);
+router.post('/otp/start', request);
+router.post('/otp/candidate/complete', complete);
 
 module.exports = router;

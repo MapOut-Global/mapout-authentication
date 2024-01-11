@@ -1,6 +1,4 @@
-const dotenv = require('dotenv');
-
-dotenv.config();
+require('dotenv').config()
 
 module.exports = {
   MSG91_AUTHKEY: process.env.MSG91_AUTHKEY,

@@ -212,6 +212,7 @@ const userSchema = new Schema(
       facebook: { type: Boolean, default: false },
       linkedin: { type: Boolean, default: false },
       google: { type: Boolean, default: false },
+      apple: { type: Boolean, default: false },
     },
 
     career_stage: {

@@ -1,55 +1,123 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const { paymentsService_createWallet } = require("../services/payment/payments.service");
+const { email_notifyUser } = require("../services/email-notifications/email-notifications.service");
+const { generateAuthorisationToken } = require("../services/jwt-service");
+const { UpdateStatus } = require("../static/constants");
 
-const registerUser = async (data) => {
+const completeRegistration = async ({ email, phoneNumber, name, deviceToken, isSocialLoggedin, socialSource }) => {
+  try {
+    let token, isUserCreated;
+    const identification = email ? { email } : { contact_number: phoneNumber };
+    let userData = await User.findOne(identification);
+
+    if (userData) {
+      userData.deviceToken = deviceToken;
+
+      if (isSocialLoggedin && (!userData.is_social_logged_in || userData.social_login_identifier?.[socialSource] !== true)) {
+        await User.updateOne({ _id: userData._id }, {
+          $set: {
+            is_social_logged_in: true,
+            [`social_login_identifier.${socialSource}`]: true
+          }
+        });
+      }
+
+      await userData.save();
+      token = await generateAuthorisationToken({ user_id: userData._id, ...identification, name });
+      isUserCreated = false;
+    } else {
+      const userDataFields = {
+        ...identification,
+        password: " ",
+        isRequestFromOtp: isSocialLoggedin ? false : true,
+        isSocialLoggedin: isSocialLoggedin,
+        name,
+        lastUpdate: UpdateStatus.Verified
+      };
+
+      if (deviceToken !== undefined) userDataFields.deviceToken = deviceToken;
+      userData = await registerUser(userDataFields, socialSource);
+      token = await generateAuthorisationToken({ user_id: userData._id, ...identification });
+      isUserCreated = true;
+    }
+
+    if (isUserCreated) {
+      await email_notifyUser({
+        name,
+        type: 'onboarding',
+        email,
+      });
+    }
+
+    const userDetails = await getUserDetails(userData._id);
+
+    const data = {
+      userDetails: userDetails.length > 0 ? userDetails[0] : {},
+      user_id: userData._id,
+      profilePic: userData?.profilePic,
+      name: userData?.name,
+      email: email || null,
+      lastUpdate: userData?.lastUpdate || null,
+      contact_number: userData?.contact_number || null,
+      token,
+      isCreated: isUserCreated,
+    };
+
+    return data;
+
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+
+const registerUser = async (data, socialSource) => {
   try {
     const usrData = await data;
     const saltRounds = 10;
     usrData.password = await bcrypt.hash(usrData.password, saltRounds);
-    let result;
 
-    const userIdentification = usrData.email ? { email: usrData.email.toLowerCase() } : { contact_number: usrData.contact_number };
+    const userIdentification = usrData.email
+      ? { email: usrData.email.toLowerCase() }
+      : { contact_number: usrData.contact_number };
 
     const user = await User.findOne(userIdentification);
 
     if (user && user.password === "  ") {
       await User.updateOne({ _id: user._id }, { $set: { password: usrData.password } });
 
-      result = {
+      return {
         _id: user._id,
         role_id: user.role_id
       };
-    } else {
-      const mongooseData = {
-        ...userIdentification,
-        password: usrData.password,
-        name: usrData.name,
-        role_id: usrData.role,
-        verified: true,
-        createdAt: new Date().toISOString()
-      };
-
-      if (usrData.referal_code) {
-        mongooseData.referal_code = usrData.referal_code;
-      }
-
-      result = await User.create(mongooseData);
     }
 
-    if (data.isRequestFromOtp == undefined || data.isRequestFromOtp == null) {
-      // await verifyEmail(result);
-    } else {
-      await User.updateOne(userIdentification, { $set: { password: "  " } });
+    const mongooseData = {
+      ...userIdentification,
+      password: usrData.password,
+      name: usrData.name,
+      role_id: usrData.role,
+      verified: true,
+      createdAt: new Date().toISOString()
+    };
+
+    if (usrData.isSocialLoggedin && (socialSource === "apple" || socialSource === "google")) {
+      mongooseData.is_social_logged_in = true;
+      mongooseData.social_login_identifier = { [socialSource]: true };
     }
 
+    const result = await User.create(mongooseData);
+
+    await User.updateOne(userIdentification, { $set: { password: "  " } });
     await paymentsService_createWallet({ owner: result._id });
+
     return result;
   } catch (err) {
     throw err;
   }
 };
-
 
 const getUserDetails = async (user_id) => {
   const id = user_id 
@@ -208,5 +276,6 @@ const getUserDetails = async (user_id) => {
 
 module.exports = {
   registerUser,
-  getUserDetails
+  getUserDetails,
+  completeRegistration
 };

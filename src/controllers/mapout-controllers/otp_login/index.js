@@ -4,7 +4,7 @@ const {
   sendOtpViaSMS,
   verifySmsOTP,
 } = require("./utils/otp");
-const { completeRegistration } = require("../authController");
+const { completeRegistration } = require("../../authController");
 
 module.exports = {
   request: async (req, res) => {

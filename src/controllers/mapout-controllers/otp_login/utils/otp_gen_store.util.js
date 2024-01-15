@@ -1,5 +1,5 @@
 // const httpErrors = require('http-errors');
-const Otp = require("../../../../models/otp");
+const Otp = require("../../../../models/mapout/otp");
 
 const generateOtp = () => {
     var otp = Math.floor(100000 + Math.random() * 900000);

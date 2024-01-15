@@ -1,6 +1,6 @@
 const { generateOtp, storeOtp,verifyOtp } = require("./otp_gen_store.util");
-const sendViaEmail = require("../../../services/otp/emailService");
-const sentViaSMS = require("../../../services/otp/smsService");
+const sendViaEmail = require("../../../../services/otp/emailService");
+const sentViaSMS = require("../../../../services/otp/smsService");
 
 
 const sendOTP = async ({ otpIdentification, sendOtpFn }) => {

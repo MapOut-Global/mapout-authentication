@@ -1,5 +1,5 @@
 const express = require('express');
-const { signup } = require('../controllers/hrgig-controllers/authentication-service');
+const { signup } = require('../controllers/hrgig-controllers/authentication-service/index');
 
 const router = express.Router();
 

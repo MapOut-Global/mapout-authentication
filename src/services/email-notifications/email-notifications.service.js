@@ -10,4 +10,9 @@ module.exports = {
       EmailNotificationsApiClient.post("/mapout-app", payload)
     );
   },
+  async email_notifyWebUser(payload) {
+    return _extractResponse(
+      EmailNotificationsApiClient.post("/mapout", payload)
+    );
+  },
 };

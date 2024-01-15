@@ -1,0 +1,10 @@
+const HRGIG_MONGODB_URI = process.env.HRGIG_MONGODB_URI
+const  MSG91_AUTHKEY = process.env.MSG91_AUTHKEY
+const MAPOUT_MONGODB_URI = process.env.MAPOUT_MONGODB_URI
+
+
+module.exports = {
+    HRGIG_MONGODB_URI,
+    MAPOUT_MONGODB_URI,
+    MSG91_AUTHKEY
+}

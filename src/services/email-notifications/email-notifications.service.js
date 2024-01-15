@@ -5,12 +5,12 @@ const _extractResponse = async (apiCall) => {
   return response.data.data;
 };
 module.exports = {
-  async email_notifyUser(payload) {
+  async AppUser_email_notifier(payload) {
     return _extractResponse(
       EmailNotificationsApiClient.post("/mapout-app", payload)
     );
   },
-  async email_notifyWebUser(payload) {
+  async WebUser_email_notifier(payload) {
     return _extractResponse(
       EmailNotificationsApiClient.post("/mapout", payload)
     );

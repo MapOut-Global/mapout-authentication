@@ -1,8 +1,8 @@
 const { generateOtp, storeOtp,verifyOtp } = require("./otp_gen_store.util");
-//const sendViaEmail = require("../../../../services/otp/emailService");
-const {email_notifyWebUser} = require("../../../../services/email-notifications/email-notifications.service")
-const sentViaSMS = require("../../../../services/sms-notifications/smsService");
+const {WebUser_email_notifier} = require("../../../../services/email-notifications/email-notifications.service")
 
+const sendViaSMS = require("../../../../services/sms-notifications/smsService");
+const sendViaEmail = WebUser_email_notifier;
 
 const sendOTP = async ({ otpIdentification, sendOtpFn }) => {
 
@@ -26,7 +26,7 @@ const sendOtpViaEmail = async ({ email }) => {
 
     let data = await sendOTP({
         otpIdentification: { email },
-        sendOtpFn: ({ otp }) => email_notifyWebUser({
+        sendOtpFn: ({ otp }) => sendViaEmail({
             email,
             otp,
             type:"6"
@@ -38,7 +38,7 @@ const sendOtpViaEmail = async ({ email }) => {
 const sendOtpViaSMS = async ({ phoneNumber }) => {
     return await sendOTP({
         otpIdentification: { phone_number:phoneNumber },
-        sendOtpFn: ({ otp }) => sentViaSMS({
+        sendOtpFn: ({ otp }) => sendViaSMS({
             phoneNumber,
             otp
         })

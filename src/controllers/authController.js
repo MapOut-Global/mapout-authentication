@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const User = require("../models/mapout/user");
 const bcrypt = require("bcrypt");
 const { paymentsService_createWallet } = require("../services/payment/payments.service");
 const { email_notifyUser } = require("../services/email-notifications/email-notifications.service");

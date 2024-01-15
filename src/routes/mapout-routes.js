@@ -1,5 +1,5 @@
 const express = require('express');
-const { request, complete } = require('../controllers/mapout-controllers/otp_login/index');
+const { request, complete } = require('../controllers/mapout-controllers/otp_login');
 const { googleAuth } = require('../controllers/mapout-controllers/social_login/Google2_Oauth');
 const { appleAuth } = require('../controllers/mapout-controllers/social_login/apple_oauth');
 

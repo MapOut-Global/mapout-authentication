@@ -1,10 +1,10 @@
 require('dotenv').config();
-const config = require('./config/config');
 const express = require('express');
-const mongoose = require('mongoose');
+const logger = require('morgan');
 const bodyParser = require('body-parser');
 const mapoutRoutes = require('./routes/mapout-routes');
 const hrgigRoutes = require('./routes/hrgig-routes');
+const socialLoginRoutes = require('./routes/social-login.routes');
 const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
@@ -22,9 +22,14 @@ const PORT = process.env.PORT || 9000;
   // Start setting up your Express app after the MongoDB connection is established
 
   app.use(bodyParser.json());
+  app.use(logger('dev'));
 
-  app.use('/mapout', mapoutRoutes);
-  app.use('/hrgig', hrgigRoutes);
+  //Health-check
+  app.get('/authentication',(req,res)=>res.send("Mapout - Authentication"))
+
+  app.use('/authentication/mapout', mapoutRoutes);
+  app.use('/authentication/hrgig', hrgigRoutes);
+  app.use('/authentication/social-login',socialLoginRoutes)
 
   // Test route for sending OTP
   // app.post('/send-otp', otpController.sendOTP);

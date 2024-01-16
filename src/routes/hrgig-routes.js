@@ -5,7 +5,7 @@ const { googleAuth } = require('../controllers/mapout-controllers/social_login/G
 const router = express.Router();
 
 router.post('/auth/signup', signup);
-router.post('/auth/login',login);
+router.post('/auth/login', login);
 router.post('/auth/google', googleAuth );
 
 

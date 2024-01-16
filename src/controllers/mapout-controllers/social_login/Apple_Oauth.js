@@ -75,11 +75,8 @@ module.exports = {
           default:
             break;
         }
-        res.status(200).send({
-          status: true,
-          message: "success",
-          data: registerUser,
-        });
+        
+        res.status(200).send(registerUser);
       } else {
         res.status(400).send({ status: false, message: "Email not verified" });
       }

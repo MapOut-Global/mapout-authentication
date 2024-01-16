@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/auth/otp/start', request);
 router.post('/auth/otp/candidate/complete', complete);
-router.post('/auth/google',googleAuth );
+router.post('/auth/google', googleAuth );
 router.post('/auth/apple', appleAuth);
 
 module.exports = router;

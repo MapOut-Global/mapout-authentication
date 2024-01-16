@@ -18,6 +18,14 @@ const userSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    is_social_logged_in: {
+      type: Boolean,
+      default: false,
+    },
+    social_login_identifier: {
+      linkedin: { type: Boolean, default: false },
+      google: { type: Boolean, default: false },
+    },
     previousLoginDates: [
       { type: String }
     ],

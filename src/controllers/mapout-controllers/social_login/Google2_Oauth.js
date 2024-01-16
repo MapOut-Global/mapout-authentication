@@ -1,11 +1,12 @@
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT);
 const { completeRegistration } = require("../utils/auth.utils");
+const { completeHRgigRegistration } = require("../../hrgig-controllers/authentication-service/auth");
 
 module.exports = {
   googleAuth: async (req, res) => {
     try {
-      const { token, deviceToken, from } = await req.body;
+      const { token, deviceToken, from, organisationName } = await req.body;
 
       const ticket = await client.verifyIdToken({
         idToken: token,
@@ -31,6 +32,16 @@ module.exports = {
             });
             break;
 
+          case "hrgig":
+            registerUser = await completeHRgigRegistration({
+              email,
+              name,
+              organisationName,
+              isSocialLoggedin: true,
+              socialSource: "google",
+            });
+            break;
+
           case "dew":
             // For dew
             break;
@@ -38,11 +49,7 @@ module.exports = {
           default:
             break;
         }
-        res.status(200).send({
-          status: true,
-          message: "success",
-          data: registerUser,
-        });
+        res.status(200).send(registerUser);
       } else {
         res.status(400).send({ status: false, message: "Email not verified" });
       }

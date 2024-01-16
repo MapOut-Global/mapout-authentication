@@ -1,12 +1,15 @@
-const User = require("../models/mapout/user");
+const User = require("../../../models/mapout/user");
 const bcrypt = require("bcrypt");
-const { paymentsService_createWallet } = require("../services/payment/payments.service");
-const { email_notifyUser } = require("../services/email-notifications/email-notifications.service");
-const { generateAuthorisationToken } = require("../services/jwt-service");
-const { UpdateStatus } = require("../static/constants");
+const { paymentsService_createWallet } = require("../../../services/payment/payments.service");
+const { email_notifyUser } = require("../../../services/email-notifications/email-notifications.service");
+const { generateAuthorisationToken } = require("../../../services/jwt-service");
+const { UpdateStatus } = require("../../../static/constants");
+const { connectToDatabase } = require("../../../services/mongodb/connection");
+const config = require("../../../config/config");
 
 const completeRegistration = async ({ email, phoneNumber, name, deviceToken, isSocialLoggedin, socialSource }) => {
   try {
+    connectToDatabase(config.MAPOUT_MONGODB_URI)
     let token, isUserCreated;
     const identification = email ? { email } : { contact_number: phoneNumber };
     let userData = await User.findOne(identification);
@@ -75,6 +78,7 @@ const completeRegistration = async ({ email, phoneNumber, name, deviceToken, isS
 
 const registerUser = async (data, socialSource) => {
   try {
+    connectToDatabase(config.MAPOUT_MONGODB_URI)
     const usrData = await data;
     const saltRounds = 10;
     usrData.password = await bcrypt.hash(usrData.password, saltRounds);
@@ -120,6 +124,7 @@ const registerUser = async (data, socialSource) => {
 };
 
 const getUserDetails = async (user_id) => {
+  connectToDatabase(config.MAPOUT_MONGODB_URI)
   const id = user_id 
 
   const workDetailsPercentageCalculation = {

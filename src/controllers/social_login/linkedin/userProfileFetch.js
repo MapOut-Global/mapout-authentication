@@ -3,9 +3,9 @@ const { completeHRgigRegistration } = require('../../hrgig-controllers/utils/aut
 
 module.exports = async (req, res) => {
     try {
-        const {access_token,from} = req.body;
+        const {access_token,requestFrom} = req.body;
 
-        const profileResponse = await axios.get('https://api.linkedin.com/v2/me', {
+        const profileResponse = await axios.get('https://api.linkedin.com/v2/userinfo', {
             headers: {
                 Authorization: `Bearer ${access_token}`,
             },
@@ -13,34 +13,18 @@ module.exports = async (req, res) => {
 
         const profileData = profileResponse.data;
 
-        const emailResponse = await axios.get(
-            'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))',
-            {
-                headers: {
-                    Authorization: `Bearer ${access_token}`,
-                },
-            }
-        );
-
-        const emailData = emailResponse.data;
-        const email =
-            emailData.elements &&
-            emailData.elements[0] &&
-            emailData.elements[0]['handle~'] &&
-            emailData.elements[0]['handle~'].emailAddress;
-
         const userProfile = {
-            name: `${profileData.localizedFirstName} ${profileData.localizedLastName}`,
-            email: email,
+            name: `${profileData.given_name} ${profileData.family_name}`,
+            email: profileData.email,
         };
-        
+
         let response;
-        switch (from) {  
+        switch (requestFrom) {  
             case "hrgig":
               response = await completeHRgigRegistration({
                 email:userProfile.email,
                 name:userProfile.name,
-                organisationName,
+                organisationName:userProfile.organisationName?userProfile.organisationName:undefined,
                 isSocialLoggedIn:true,
                 socialSource:'linkedin',
               })
@@ -49,6 +33,10 @@ module.exports = async (req, res) => {
             case "dew":
               // For dew
               break;
+            
+            case "mapout":
+                // For mapout
+                break;
 
             default:
               break;

@@ -28,7 +28,6 @@ const createNewUser = async (userData) => {
           fullName: name,
           email,
           organisationName,
-          password: "",
           is_social_logged_in: isSocialLoggedIn,
           social_login_identifier: {
             [socialSource]: true,

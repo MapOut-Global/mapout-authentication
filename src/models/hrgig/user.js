@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     },
     organisationName: {
       type: String,
-      required: true,
+     // required: true,
     },
     email: {
       type: String,
@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
       type: String,
-      required: true,
+     // required: true,
     },
     is_social_logged_in: {
       type: Boolean,

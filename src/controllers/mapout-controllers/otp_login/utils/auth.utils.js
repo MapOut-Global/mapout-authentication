@@ -1,15 +1,13 @@
-const User = require("../../../models/mapout/user");
+const User = require("../../../../models/mapout/user");
 const bcrypt = require("bcrypt");
 const {
   paymentsService_createWallet,
-} = require("../../../services/payment/payments.service");
-const {
-  email_notifyUser,
-} = require("../../../services/email-notifications/email-notifications.service");
-const { generateAuthorisationToken } = require("../../../services/jwt-service");
-const { UpdateStatus } = require("../../../static/constants");
-const { connectToDatabase } = require("../../../services/mongodb/connection");
-const config = require("../../../config/config");
+} = require("../../../../services/payment/payments.service");
+const { AppUser_email_notifier } = require("../../../../services/email-notifications/email-notifications.service");
+const { generateAuthorisationToken } = require("../../../../services/jwt-service");
+const { UpdateStatus } = require("../../../../static/constants");
+const { connectToDatabase } = require("../../../../services/mongodb/connection");
+const config = require("../../../../config/config");
 
 const completeRegistration = async ({
   email,
@@ -71,7 +69,7 @@ const completeRegistration = async ({
     }
 
     if (isUserCreated) {
-      await email_notifyUser({
+      await AppUser_email_notifier({
         name,
         type: "onboarding",
         email,
@@ -106,7 +104,7 @@ const completeRegistration = async ({
 const registerUser = async (data, socialSource) => {
   try {
     connectToDatabase(config.MAPOUT_MONGODB_URI);
-    const usrData = await data;
+    const usrData =  data;
     const saltRounds = 10;
     usrData.password = await bcrypt.hash(usrData.password, saltRounds);
 

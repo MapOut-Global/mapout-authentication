@@ -1,6 +1,6 @@
 const Jwt = require("jsonwebtoken");
 const jwksClient = require("jwks-rsa");
-const { completeRegistration } = require("../utils/auth.utils");
+const { completeRegistration } = require("../mapout-controllers/otp_login/utils/auth.utils");
 
 const appleUrl = jwksClient({
   jwksUri: "https://appleid.apple.com/auth/keys",

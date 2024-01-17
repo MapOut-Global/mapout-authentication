@@ -1,6 +1,6 @@
 const express = require('express');
 const { signup, login } = require('../controllers/hrgig-controllers/authentication-service/auth');
-const { googleAuth } = require('../controllers/mapout-controllers/social_login/Google2_Oauth');
+const { googleAuth } = require('../controllers/social_login/Google2_Oauth');
 
 const router = express.Router();
 

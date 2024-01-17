@@ -1,7 +1,7 @@
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT);
-const { completeRegistration } = require("../utils/auth.utils");
-const { completeHRgigRegistration } = require("../../hrgig-controllers/authentication-service/auth");
+const { completeRegistration } = require("../mapout-controllers/otp_login/utils/auth.utils");
+const { completeHRgigRegistration } = require("../hrgig-controllers/utils/auth.utils");
 
 module.exports = {
   googleAuth: async (req, res) => {

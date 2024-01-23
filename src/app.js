@@ -25,11 +25,11 @@ const PORT = process.env.PORT || 9000;
   app.use(logger('dev'));
 
   //Health-check
-  app.get('/authentication',(req,res)=>res.send("Mapout - Authentication"))
+  app.get('/mapout-authentication',(req,res)=>res.send("Mapout - Authentication"))
 
-  app.use('/authentication/mapout', mapoutRoutes);
-  app.use('/authentication/hrgig', hrgigRoutes);
-  app.use('/authentication/social-login',socialLoginRoutes)
+  app.use('/mapout-authentication/mapout', mapoutRoutes);
+  app.use('/mapout-authentication/hrgig', hrgigRoutes);
+  app.use('/mapout-authentication/social-login',socialLoginRoutes)
 
   // Test route for sending OTP
   // app.post('/send-otp', otpController.sendOTP);

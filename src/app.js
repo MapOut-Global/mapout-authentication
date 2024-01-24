@@ -6,6 +6,7 @@ const mapoutRoutes = require('./routes/mapout-routes');
 const hrgigRoutes = require('./routes/hrgig-routes');
 const socialLoginRoutes = require('./routes/social-login.routes');
 const errorHandler = require('./middlewares/errorHandler');
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 9000;
@@ -20,8 +21,15 @@ const PORT = process.env.PORT || 9000;
   //console.log('Connected to MongoDB');
 
   // Start setting up your Express app after the MongoDB connection is established
+  const allowedOrigins = ['https://admin.mapout.com', 'https://dev.admin.mapout.com', 'http://localhost:5173' , 'http://localhost:3000', 'https://mapout-admin-frontend.pages.dev'];
 
   app.use(bodyParser.json());
+  app.use(cors({
+    origin: allowedOrigins,
+    methods: '*',
+    allowedHeaders: 'Content-Type,Authorization',
+  }));  
+
   app.use(logger('dev'));
 
   //Health-check

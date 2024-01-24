@@ -2,7 +2,8 @@ const bcrypt = require("bcrypt");
 const HrGigUser = require("../../../models/hrgig/user");
 const { generateAuthorisationToken } = require("../../../services/jwt-service");
 const {createNewUser} = require('../utils/auth.utils')
-
+const config = require("../../../config/config");
+const { connectToDatabase } = require("../../../services/mongodb/connection");
 
 
 module.exports = {

@@ -1,6 +1,7 @@
 const { OAuth2Client } = require("google-auth-library");
 const { completeRegistration } = require("../mapout-controllers/otp_login/utils/auth.utils");
 const { completeHRgigRegistration } = require("../hrgig-controllers/utils/auth.utils");
+const  axios  = require("axios");
 
 module.exports = {
   googleAuth: async (req, res) => {
@@ -8,6 +9,7 @@ module.exports = {
       const { token, deviceToken, requestFrom, organisationName } = req.body;
       let client
       let ticket
+      let userInfo
 
       switch (requestFrom) {
         case "app":
@@ -20,13 +22,19 @@ module.exports = {
               process.env.GOOGLE_WEB_CLIENT_ID,
             ],
           });
+          userInfo = ticket.getPayload();
           break;
 
         case "hrgig":
-          client = new OAuth2Client(process.env.HRGIG_GOOGLE_CLIENT);
-          ticket = await client.verifyIdToken({
-            idToken: token
-          });
+          // client = new OAuth2Client(process.env.HRGIG_GOOGLE_CLIENT);
+          // ticket = await client.verifyIdToken({
+          //   idToken: token
+          // });
+          userInfo = await axios
+          .get('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .then(res => res.data);
           break;
 
         case "dew":
@@ -36,7 +44,7 @@ module.exports = {
         default:
           break;
       }
-      const { email, name, email_verified } = ticket.getPayload();
+      const { email, name, email_verified } = userInfo;
 
       if (email_verified) {
         let registerUser;

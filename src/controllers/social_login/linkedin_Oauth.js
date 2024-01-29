@@ -20,7 +20,11 @@ module.exports = async (req, res) => {
         break;
 
       default:
-        break;
+        return res.status(400).send({ error: 'Invalid request source' });
+    }
+
+    if (!client || !secret) {
+      return res.status(500).send({ error: 'LinkedIn credentials not configured properly' });
     }
 
     const tokenData = await axios.post(
@@ -34,6 +38,10 @@ module.exports = async (req, res) => {
 
     const TokenResponse = tokenData.data;
 
+    if (!TokenResponse.access_token) {
+      return res.status(500).send({ error: 'Failed to retrieve access token from LinkedIn' });
+    }
+
     const profileResponse = await axios.get('https://api.linkedin.com/v2/userinfo', {
       headers: {
           Authorization: `Bearer ${TokenResponse.access_token}`,
@@ -41,6 +49,10 @@ module.exports = async (req, res) => {
   });
 
   const profileData = profileResponse.data;
+
+  if (!profileData || !profileData.email ) {
+    return res.status(500).send({ error: 'Failed to retrieve user profile from LinkedIn' });
+  }
 
   const userProfile = {
       name: `${profileData.given_name} ${profileData.family_name}`,
@@ -68,7 +80,7 @@ module.exports = async (req, res) => {
           break;
 
       default:
-        break;
+        return res.status(400).send({ error: 'Invalid request source' });
     }
   
   res.status(200).send(response);

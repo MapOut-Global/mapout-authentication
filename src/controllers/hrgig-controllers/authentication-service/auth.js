@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const HrGigUser = require("../../../models/hrgig/user");
 const { generateAuthorisationToken } = require("../../../services/jwt-service");
-const {createNewUser} = require('../utils/auth.utils')
+const {createNewUser, findUserByEmail} = require('../utils/auth.utils')
 const config = require("../../../config/config");
 const { connectToDatabase } = require("../../../services/mongodb/connection");
 
@@ -11,6 +11,12 @@ module.exports = {
     try {
       connectToDatabase(config.HRGIG_MONGODB_URI);
       const { fullName, organisationName, email, password } = req.body;
+
+      const existingUser = await findUserByEmail(email);
+      if (existingUser) {
+        return res.status(409).json({ message: "Email already exists" });
+      }
+
       const hashedPassword = await bcrypt.hash(password, 10);
 
       const newUser = await createNewUser({
@@ -49,13 +55,13 @@ module.exports = {
       const user = await HrGigUser.findOne({ email });
 
       if (!user) {
-        return res.status(401).json({ message: "Invalid credentials" });
+        return res.status(404).json({ message: "User Not Found!" });
       }
 
       const passwordMatch = await bcrypt.compare(password, user.password);
 
       if (!passwordMatch) {
-        return res.status(401).json({ message: "Invalid credentials" });
+        return res.status(401).json({ message: "Incorrect Password!" });
       }
 
       const token = await generateAuthorisationToken({

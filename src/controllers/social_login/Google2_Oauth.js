@@ -78,7 +78,7 @@ module.exports = {
         }
         res.status(200).send(registerUser);
       } else {
-        res.status(400).send({ status: false, message: "Email not verified" });
+        res.status(403).send({ status: false, message: "Email not verified" });
       }
     } catch (error) {
       res

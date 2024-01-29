@@ -11,6 +11,10 @@ const createNewUser = async (userData) => {
     return newUser;
   };
 
+  const findUserByEmail = async (email) => {
+    const user = await HrGigUser.findOne({ email });
+    return Boolean(user);
+  };
 
  const completeHRgigRegistration = async ({
     email,
@@ -62,4 +66,4 @@ const createNewUser = async (userData) => {
     }
   }
 
-  module.exports = { completeHRgigRegistration , createNewUser}
+  module.exports = { completeHRgigRegistration , createNewUser,findUserByEmail}

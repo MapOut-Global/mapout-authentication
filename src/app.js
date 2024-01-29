@@ -12,7 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 9000;
 
   app.use(bodyParser.json());
-  const allowedOrigins = ['https://admin.mapout.com', 'https://dev.admin.mapout.com', 'http://localhost:5173' , 'http://localhost:3000', 'https://mapout-admin-frontend.pages.dev'];
+  const allowedOrigins = ['https://admin.mapout.com', 'https://dev.admin.mapout.com', 'http://localhost:5173' , 'http://localhost:3000', 'https://mapout-admin-frontend.pages.dev','https://development.hrgig-webapp.pages.dev','https://hrgig-webapp.pages.dev'];
   app.use(cors({ origin: allowedOrigins, credentials: true })); 
 
   app.use(logger('dev'));

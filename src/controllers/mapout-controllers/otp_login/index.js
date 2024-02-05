@@ -10,7 +10,8 @@ const { completeRegistration } = require("./utils/auth.utils");
 module.exports = {
   request: async (req, res) => {
     try {
-      const { email, phoneNumber, source ,useStaticOtp } = req.body;
+      const { email, phoneNumber, source  } = req.body;
+      const useStaticOtp = true
       if(email === "invalid@mapout.com") res.status(200).send({ validUser: false });
 
       if (email) await sendOtpViaEmail({ email: email });

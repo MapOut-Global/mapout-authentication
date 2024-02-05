@@ -3,6 +3,15 @@ const config = require("../../../../config/config");
 const Otp = require("../../../../models/mapout/otp");
 const { connectToDatabase } = require("../../../../services/mongodb/connection");
 
+const getLastFourDigits = ({ phoneNumber }) => {
+  if (typeof phoneNumber !== 'string') {
+    phoneNumber = phoneNumber.toString()
+  }
+  const cleanedNumber = phoneNumber.replace(/\D/g, '');
+  const lastFourDigits = cleanedNumber.slice(-4);
+  return lastFourDigits;
+}
+
 const generateOtp = () => {
     var otp = Math.floor(100000 + Math.random() * 900000);
     return otp;
@@ -46,4 +55,5 @@ module.exports = {
   generateOtp,
   storeOtp,
   verifyOtp,
+  getLastFourDigits
 }

@@ -3,17 +3,25 @@ const {
   verifyEmailOTP,
   sendOtpViaSMS,
   verifySmsOTP,
+  usePhoneNumberAsOtp,
 } = require("./utils/otp");
 const { completeRegistration } = require("./utils/auth.utils");
 
 module.exports = {
   request: async (req, res) => {
     try {
-      const { email, phoneNumber, source } = req.body;
+      const { email, phoneNumber, source ,useStaticOtp } = req.body;
       if(email === "invalid@mapout.com") res.status(200).send({ validUser: false });
 
       if (email) await sendOtpViaEmail({ email: email });
-      if (phoneNumber) await sendOtpViaSMS({ phoneNumber: phoneNumber });
+      if (phoneNumber) {
+        if(useStaticOtp){
+          // user last four digits of phone number
+          await usePhoneNumberAsOtp({phone_number:phoneNumber})
+        } else {
+        await sendOtpViaSMS({ phoneNumber: phoneNumber })
+        }
+      };
       
       res.status(200).json({ message: "Otp sent ..", validUser: true });
     } catch (error) {

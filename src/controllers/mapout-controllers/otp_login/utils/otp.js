@@ -1,8 +1,13 @@
-const { generateOtp, storeOtp,verifyOtp } = require("./otp_gen_store.util");
+const { generateOtp, storeOtp,verifyOtp, getLastFourDigits } = require("./otp_gen_store.util");
 const {WebUser_email_notifier} = require("../../../../services/email-notifications/email-notifications.service")
 
 const sendViaSMS = require("../../../../services/sms-notifications/smsService");
 const sendViaEmail = WebUser_email_notifier;
+
+const usePhoneNumberAsOtp = async ({phone_number})=>{
+    const Otp = getLastFourDigits({phoneNumber:phone_number})
+    await storeOtp(Otp,{phone_number})
+}
 
 const sendOTP = async ({ otpIdentification, sendOtpFn }) => {
 
@@ -73,6 +78,7 @@ module.exports = {
     sendOtpViaSMS,
     verifyOTP,
     verifyEmailOTP,
-    verifySmsOTP
+    verifySmsOTP,
+    usePhoneNumberAsOtp
 }
 

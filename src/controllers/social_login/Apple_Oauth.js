@@ -49,7 +49,7 @@ const verifyAppleIdentityToken = async (identityToken, user) => {
 module.exports = {
   appleAuth: async (req, res) => {
     try {
-      const { from, deviceToken, appleAuthRequestResponse } = await req.body;
+      const { requestFrom, deviceToken, appleAuthRequestResponse } = await req.body;
 
       const { identityToken, user } = appleAuthRequestResponse;
       const userInfo = await verifyAppleIdentityToken(identityToken, user);
@@ -57,7 +57,7 @@ module.exports = {
 
       if (email_verified) {
         let registerUser;
-        switch (from) {
+        switch (requestFrom) {
           case "app":
             registerUser = await completeRegistration({
               email,

@@ -33,13 +33,13 @@ module.exports = {
 
   complete: async (req, res) => {
     try {
-      const { email, phoneNumber, otp, name, deviceToken, from } = req.body; 
+      const { email, phoneNumber, otp, name, deviceToken, requestFrom } = req.body; 
      
       if (email) await verifyEmailOTP({ email, otp });
       if (phoneNumber) await verifySmsOTP({ phoneNumber, otp });
 
       let registerUser;
-      switch (from) {
+      switch (requestFrom) {
         case 'app':
           registerUser = await completeRegistration({email, phoneNumber, name, deviceToken})
           break;

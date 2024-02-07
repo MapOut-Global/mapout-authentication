@@ -54,7 +54,7 @@ module.exports = {
       res.status(200).send({
         status: true,
         message: "success",
-        data: registerUser
+        data: registerUser.data
       });
     } catch (error) {
       console.error(error);

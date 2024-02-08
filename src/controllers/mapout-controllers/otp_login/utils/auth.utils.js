@@ -20,7 +20,7 @@ const completeRegistration = async ({
   try {
     connectToDatabase(config.MAPOUT_MONGODB_URI);
     let token, isUserCreated;
-    const identification = email ? { email } : { contact_number: phoneNumber };
+    const identification = email ? { email } : { mobile: phoneNumber };
     let userData = await User.findOne(identification);
 
     if (userData) {
@@ -88,7 +88,7 @@ const completeRegistration = async ({
         name: userData?.name,
         email: email || null,
         lastUpdate: userData?.lastUpdate || null,
-        contact_number: userData?.contact_number || null,
+        mobile: userData?.mobile || null,
         token,
         isCreated: isUserCreated,
       },
@@ -110,7 +110,7 @@ const registerUser = async (data, socialSource) => {
 
     const userIdentification = usrData.email
       ? { email: usrData.email.toLowerCase() }
-      : { contact_number: usrData.contact_number };
+      : { mobile: usrData.mobile };
 
     const user = await User.findOne(userIdentification);
 

@@ -65,9 +65,6 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "CountryCode",
     },
-    contact_number: {
-      type: Number,
-    },
     mobile: {
       type: Number,
     },
@@ -353,7 +350,7 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-userSchema.index({ email: 1, contact_number: 1 }, { sparse: true });
+userSchema.index({ email: 1, mobile: 1 }, { sparse: true });
 
 userSchema.virtual("profileCompletionStatus").get(function () {
   return {
@@ -371,7 +368,7 @@ userSchema.virtual("userProfileCompletionStatus").get(function () {
   return {
     name: Boolean(this.name),
     email: Boolean(this.email),
-    contact_number: Boolean(this.contact_number),
+    mobile: Boolean(this.mobile),
     gender: Boolean(this.gender),
     ethnicity: Boolean(this.ethnicity),
     disability: Boolean(this.disability),
@@ -387,4 +384,3 @@ userSchema.virtual("userProfileCompletionStatus").get(function () {
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
-

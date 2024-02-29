@@ -30,8 +30,8 @@ const verifyAppleIdentityToken = async (identityToken, user) => {
 
     if (!verifiedToken) throw new Error("Verification failed");
 
-    if (verifiedToken.aud === "com.mapout" && verifiedToken.sub === user) {
-      const userInfo = {
+    if ((verifiedToken.aud === "com.mapout" || verifiedToken.aud === "com.mapout.dev") && verifiedToken.sub === user) {
+        const userInfo = {
         email: verifiedToken.email,
         name: verifiedToken.name,
         email_verified: verifiedToken.email_verified,

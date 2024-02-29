@@ -42,6 +42,8 @@ const completeRegistration = async ({
         );
       }
 
+      userData.isDeactivated = false;
+
       await userData.save();
       token = await generateAuthorisationToken({
         user_id: userData._id,

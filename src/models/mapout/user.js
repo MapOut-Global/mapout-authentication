@@ -377,7 +377,7 @@ userSchema.virtual("userProfileCompletionStatus").get(function () {
   return {
     name: Boolean(this.name),
     email: Boolean(this.email),
-    contact_number: Boolean(this.contact_number),
+    mobile: Boolean(this.mobile),
     gender: Boolean(this.gender),
     ethnicity: Boolean(this.ethnicity),
     disability: Boolean(this.disability),

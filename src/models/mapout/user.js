@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require("../services/db/mongo");
 const Schema = mongoose.Schema;
 
 const docsSchema = new mongoose.Schema({
@@ -65,6 +65,9 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "CountryCode",
     },
+    contact_number: {
+      type: Number,
+    },
     mobile: {
       type: Number,
     },
@@ -75,12 +78,15 @@ const userSchema = new Schema(
     profilePic: {
       type: String,
     },
+    profileVideo: {
+      type: String,
+    },
     current_location: {
       type: Object,
     },
     ethnicity: {
-      type: Schema.Types.ObjectId,
-      ref: "Ethnicity",
+      type: Schema.Types.String,
+      // ref: "Ethnicity",
     },
     gender: {
       type: String,
@@ -90,8 +96,8 @@ const userSchema = new Schema(
       ref: "Disability",
     },
     nationality: {
-      type: Schema.Types.ObjectId,
-      ref: "Nationality",
+      type: Schema.Types.String,
+      // ref: "Nationality",
     },
     desired_work_locations: {
       type: Array,
@@ -109,6 +115,10 @@ const userSchema = new Schema(
     job_search_motivation: {
       type: Array,
       default: [],
+    },
+    role_preferences: {
+      type: [Schema.Types.String],
+      default:[],
     },
     soft_skills: {
       type: [Schema.Types.ObjectId],
@@ -130,13 +140,14 @@ const userSchema = new Schema(
       default: [],
       ref: "Qualities",
     },
-    my_availability: {
-      available_for: { type: Array, default: [] },
-      available_from: { type: Array, default: [] },
+    available_for: { 
+      type: Array, default: [] 
     },
-
-    lastUpdate : {
-      type : String,
+    available_from: { 
+      type: Array, default: [] 
+    },
+    lastUpdate: {
+      type: String,
     },
 
     links: [
@@ -182,13 +193,12 @@ const userSchema = new Schema(
     career_headline: {
       type: String,
     },
-    work_preferences: {
-      type: [Schema.Types.String],
-      default: [],
+    work_preference: {
+      type: Schema.Types.String,
     },
     industry_preferences: {
-      type: [Schema.Types.ObjectId],
-      ref: "Industry",
+      type: [Schema.Types.String],
+      default:[]
     },
     profession_preferences: {
       type: [Schema.Types.ObjectId],
@@ -209,11 +219,13 @@ const userSchema = new Schema(
       facebook: { type: Boolean, default: false },
       linkedin: { type: Boolean, default: false },
       google: { type: Boolean, default: false },
-      apple: { type: Boolean, default: false },
     },
 
     career_stage: {
       type: String,
+    },
+    desired_career:{
+      type : String
     },
 
     career: {
@@ -227,8 +239,8 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId,
     },
 
-    coaching_goal : {
-      type :Schema.Types.String
+    coaching_goal: {
+      type: Schema.Types.String,
     },
 
     /* Mentor specific */
@@ -263,7 +275,6 @@ const userSchema = new Schema(
     about: {
       type: String,
     },
-   
     personality_assesment: {
       mbti: {
         code: Schema.Types.String,
@@ -280,16 +291,8 @@ const userSchema = new Schema(
       type: [{ type: "ObjectId", ref: "usersTechnicalSkills" }],
     },
     talent_board: {
-      _id: { type: Schema.Types.ObjectId },
-      talent_boards: [
-        {
-          title: { type: String },
-          description: { type: String },
-          project: { type: Array },
-          hifi: { type: Array },
-          followers: { type: Array },
-        },
-      ],
+      type: Schema.Types.ObjectId,
+      ref:"TalentBoard"
     },
     is_talent_board_visible: {
       type: Schema.Types.Boolean,
@@ -328,15 +331,13 @@ const userSchema = new Schema(
         Number_of_reviews_between_rating_4_to_5: { type: Number, default: 0 },
       },
     },
-    userDay:{
-      type:Number
+    userDay: {
+      type: Number,
     },
-    userDayDate:{
-      type:String
+    userDayDate: {
+      type: String,
     },
-    previousLoginDates : [
-      {type:String}
-    ],
+    previousLoginDates: [{ type: String }],
     createdAt: {
       type: Date,
     },
@@ -344,7 +345,15 @@ const userSchema = new Schema(
     last_activity: {
       type: Date,
     },
-    preferenceSelected:{ type: Boolean, default: true},
+    preferenceSelected: { type: Boolean, default: true },
+    taskDetails: {
+      _id: { type: Schema.Types.ObjectId, required: false },
+      taskCount: { type: Number, required: false, default:1 },
+      isCompleted: { type: Boolean, default: false },
+      lastTaskCompleted: { type: Date },
+      dailyStreakCount: { type: Number, default:0 },
+    },
+    isDeactivated: { type: Boolean, default: false },
   },
   { toJSON: { virtuals: true } },
   { timestamps: true }
@@ -361,14 +370,14 @@ userSchema.virtual("profileCompletionStatus").get(function () {
     mentorFor: Boolean(this.mentorFor?.length),
     mentorPrice: Boolean(this.mentorPrice),
     designation: Boolean(this.experience?.length),
-  };
+  }; 
 });
 
 userSchema.virtual("userProfileCompletionStatus").get(function () {
   return {
     name: Boolean(this.name),
     email: Boolean(this.email),
-    mobile: Boolean(this.mobile),
+    contact_number: Boolean(this.contact_number),
     gender: Boolean(this.gender),
     ethnicity: Boolean(this.ethnicity),
     disability: Boolean(this.disability),
@@ -384,3 +393,4 @@ userSchema.virtual("userProfileCompletionStatus").get(function () {
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
+

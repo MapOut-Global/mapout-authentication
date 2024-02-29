@@ -2,9 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
-const mapoutRoutes = require('./routes/mapout-routes');
-const hrgigRoutes = require('./routes/hrgig-routes');
-const socialLoginRoutes = require('./routes/social-login.routes');
+const indexRouter = require('./routes')
 const errorHandler = require('./middlewares/errorHandler');
 const cors = require('cors');
 
@@ -16,14 +14,7 @@ const PORT = process.env.PORT || 9000;
   app.use(cors({ origin: allowedOrigins, credentials: true })); 
 
   app.use(logger('dev'));
-
-  //Health-check
-  app.get('/mapout-authentication',(req,res)=>res.send("Mapout - Authentication"))
-
-  app.use('/mapout-authentication/mapout', mapoutRoutes);
-  app.use('/mapout-authentication/hrgig', hrgigRoutes);
-  app.use('/mapout-authentication/social-login',socialLoginRoutes)
-
+  app.use('/',indexRouter)
   app.use(errorHandler);
 
   app.listen(PORT, () => {

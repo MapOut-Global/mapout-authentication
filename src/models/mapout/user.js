@@ -17,15 +17,41 @@ const docsSchema = new mongoose.Schema({
   },
 });
 
+// const languageSchema = new mongoose.Schema({
+//   name: {
+//     type: Schema.Types.ObjectId,
+//     ref: "Language",
+//   },
+//   reading: {
+//     level: {
+//       type: Schema.Types.Number,
+//       ref: "Fluency",
+//     },
+//   },
+//   writing: {
+//     level: {
+//       type: Schema.Types.Number,
+//       ref: "Fluency",
+//     },
+//   },
+//   speaking: {
+//     level: {
+//       type: Schema.Types.Number,
+//       ref: "Fluency",
+//     },
+//   },
+// });
+
 const languageSchema = new mongoose.Schema({
   name: {
     type: Schema.Types.String,
   },
-  fluency: {
-    reading: { type: Schema.Types.String },
-    writing: { type: Schema.Types.String },
-    speaking: { type: Schema.Types.String },
-  },
+  fluency: { type: Schema.Types.String },
+  //  {
+  //   reading: { type: Schema.Types.String },
+  //   writing: { type: Schema.Types.String },
+  //   speaking: { type: Schema.Types.String },
+  // },
   sequence_id: { type: Schema.Types.String },
 });
 
@@ -126,9 +152,9 @@ const userSchema = new Schema(
       ref: "SoftSkill",
     },
     hobbies_interests: {
-      type: [Schema.Types.ObjectId],
+      type: [Schema.Types.String],
       default: [],
-      ref: "Hobby",
+      // ref: "Hobby",
     },
     inspiring_companies: {
       type: [Schema.Types.ObjectId],
@@ -144,7 +170,7 @@ const userSchema = new Schema(
       type: Array, default: [] 
     },
     available_from: { 
-      type: Array, default: [] 
+      type: String 
     },
     lastUpdate: {
       type: String,
@@ -193,7 +219,7 @@ const userSchema = new Schema(
     career_headline: {
       type: String,
     },
-    work_preference: {
+    ƒava: {
       type: Schema.Types.String,
     },
     industry_preferences: {
@@ -275,6 +301,12 @@ const userSchema = new Schema(
     about: {
       type: String,
     },
+    // technical_skills: [
+    //   {
+    //     skill: { type: Schema.Types.ObjectId, ref: "TechnicalSkill" },
+    //     experience: { year: { type: Number }, month: { type: Number } },
+    //   },
+    // ],
     personality_assesment: {
       mbti: {
         code: Schema.Types.String,
@@ -359,6 +391,18 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
+// userSchema.index({
+//   name: "text",
+//   "mentorFor.name": "text",
+//   "mentorTo.name": "text",
+//   about: "text",
+//   mentorPrice: "text",
+//   current_location: "text",
+//   mentorType: "text",
+//   field_of_work: "text",
+//   industry: "text",
+// });
+
 userSchema.index({ email: 1, mobile: 1 }, { sparse: true });
 
 userSchema.virtual("profileCompletionStatus").get(function () {
@@ -377,7 +421,7 @@ userSchema.virtual("userProfileCompletionStatus").get(function () {
   return {
     name: Boolean(this.name),
     email: Boolean(this.email),
-    mobile: Boolean(this.mobile),
+    contact_number: Boolean(this.contact_number),
     gender: Boolean(this.gender),
     ethnicity: Boolean(this.ethnicity),
     disability: Boolean(this.disability),
@@ -394,3 +438,7 @@ userSchema.virtual("userProfileCompletionStatus").get(function () {
 const User = mongoose.model("User", userSchema);
 module.exports = User;
 
+//test
+
+
+//test

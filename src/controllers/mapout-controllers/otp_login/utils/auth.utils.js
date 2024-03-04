@@ -8,6 +8,7 @@ const { generateAuthorisationToken } = require("../../../../services/jwt-service
 const { UpdateStatus } = require("../../../../static/constants");
 const { connectToDatabase } = require("../../../../services/mongodb/connection");
 const config = require("../../../../config/config");
+const UserSetting = require("../../../../models/mapout/userSettings");
 
 const completeRegistration = async ({
   email,
@@ -146,9 +147,10 @@ const registerUser = async (data, socialSource) => {
     }
 
     const result = await User.create(mongooseData);
+    await UserSetting.create({user_id:result._id})
 
     await User.updateOne(userIdentification, { $set: { password: "  " } });
-    await paymentsService_createWallet({ owner: result._id });
+  //  await paymentsService_createWallet({ owner: result._id });
 
     return result;
   } catch (err) {

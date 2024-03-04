@@ -1,4 +1,5 @@
 const User = require("../../../../models/mapout/user");
+const mongoose = require("mongoose")
 const bcrypt = require("bcrypt");
 const {
   paymentsService_createWallet,
@@ -303,7 +304,7 @@ const getUserDetails = async (user_id) => {
 
   return await User.aggregate([{
     $match: {
-      _id: mongoose.Types.ObjectId(id)
+      _id: new mongoose.Types.ObjectId(id)
     }
   },
   {
@@ -338,13 +339,13 @@ const getUserDetails = async (user_id) => {
       as: "talent_board"
     }
   },
-  {
-    $addFields: {
-      "careerJourneyDay": currentCareerJourneyDay,
-      "feedNotification": feedNotification ? feedNotification.toObject() : null,
-      "PointsWallet": walletPoints
-    }
-  },
+  // {
+  //   $addFields: {
+  //     "careerJourneyDay": currentCareerJourneyDay,
+  //     "feedNotification": feedNotification ? feedNotification.toObject() : null,
+  //     "PointsWallet": walletPoints
+  //   }
+  // },
   {
     $project: {
       name: 1,
@@ -366,9 +367,9 @@ const getUserDetails = async (user_id) => {
       hobbies_interests:1,
       docs: 1,
       talent_board:1,
-      careerJourneyDay: 1,
-      userDay: 1,
-      userDayDate: 1,
+      //careerJourneyDay: 1,
+      // userDay: 1,
+      // userDayDate: 1,
       lastUpdate:1,
       //PointsWallet: 1,
       previousLoginDates: 1,

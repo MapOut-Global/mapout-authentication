@@ -108,7 +108,7 @@ const userSchema = new Schema(
       type: String,
     },
     current_location: {
-      type: Object,
+      type: String,
     },
     ethnicity: {
       type: Schema.Types.String,
@@ -127,7 +127,7 @@ const userSchema = new Schema(
     },
     desired_work_locations: {
       type: Array,
-      default: [],
+     // default: [],
     },
     MBTI_code: {
       type: String,
@@ -142,9 +142,11 @@ const userSchema = new Schema(
       type: Array,
       default: [],
     },
+    work_preference:{
+      type:Schema.Types.String
+    },
     role_preferences: {
-      type: [Schema.Types.String],
-      default:[],
+      type: Schema.Types.String,
     },
     soft_skills: {
       type: [Schema.Types.ObjectId],
@@ -158,19 +160,19 @@ const userSchema = new Schema(
     },
     inspiring_companies: {
       type: [Schema.Types.ObjectId],
-      default: [],
+     // default: [],
       ref: "Company",
     },
     employer_qualities: {
       type: [Schema.Types.ObjectId],
-      default: [],
+     // default: [],
       ref: "Qualities",
     },
     available_for: { 
       type: Array, default: [] 
     },
     available_from: { 
-      type: String 
+      type: String,
     },
     lastUpdate: {
       type: String,
@@ -195,7 +197,7 @@ const userSchema = new Schema(
     // @TODO: check whether it is a valid field
     role_id: {
       type: [Schema.Types.Number],
-      default: [1],
+     // default: [1],
     },
     profile_visibility: {
       type: Boolean,
@@ -223,8 +225,7 @@ const userSchema = new Schema(
       type: Schema.Types.String,
     },
     industry_preferences: {
-      type: [Schema.Types.String],
-      default:[]
+      type: Schema.Types.String,
     },
     profession_preferences: {
       type: [Schema.Types.ObjectId],

@@ -11,7 +11,7 @@ module.exports = {
   request: async (req, res) => {
     try {
       const { email, phoneNumber, source  } = req.body;
-      const useStaticOtp = true
+      const useStaticOtp = false;
       if(email === "invalid@mapout.com") res.status(200).send({ validUser: false });
 
       if (email) await sendOtpViaEmail({ email: email });

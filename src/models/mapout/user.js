@@ -143,10 +143,10 @@ const userSchema = new Schema(
       default: [],
     },
     work_preference:{
-      type:Schema.Types.String
+      type:[Schema.Types.String]
     },
     role_preferences: {
-      type: Schema.Types.String,
+      type: [Schema.Types.String],
     },
     soft_skills: {
       type: [Schema.Types.ObjectId],
@@ -168,12 +168,16 @@ const userSchema = new Schema(
      // default: [],
       ref: "Qualities",
     },
-    available_for: { 
-      type: Array, default: [] 
-    },
-    available_from: { 
-      type: String,
-    },
+    availability: [
+      {
+        available_for: {
+          type: String,
+        },
+        available_from: {
+          type: String,
+        }
+      }
+    ],
     lastUpdate: {
       type: String,
     },
@@ -225,7 +229,7 @@ const userSchema = new Schema(
       type: Schema.Types.String,
     },
     industry_preferences: {
-      type: Schema.Types.String,
+      type: [Schema.Types.String],
     },
     profession_preferences: {
       type: [Schema.Types.ObjectId],
@@ -387,6 +391,7 @@ const userSchema = new Schema(
       dailyStreakCount: { type: Number, default:0 },
     },
     isDeactivated: { type: Boolean, default: false },
+    profilePdf: {type:String}
   },
   { toJSON: { virtuals: true } },
   { timestamps: true }
@@ -422,7 +427,7 @@ userSchema.virtual("userProfileCompletionStatus").get(function () {
   return {
     name: Boolean(this.name),
     email: Boolean(this.email),
-    contact_number: Boolean(this.contact_number),
+    mobile: Boolean(this.mobile),
     gender: Boolean(this.gender),
     ethnicity: Boolean(this.ethnicity),
     disability: Boolean(this.disability),
@@ -436,7 +441,7 @@ userSchema.virtual("userProfileCompletionStatus").get(function () {
   };
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema );
 module.exports = User;
 
 //test

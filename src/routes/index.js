@@ -10,4 +10,4 @@ router.use('/mapout-authentication/mapout', mapoutRoutes);
 router.use('/mapout-authentication/hrgig', hrgigRoutes);
 router.use('/mapout-authentication/social-login', socialLoginRoutes)
 
-module.exports = router
+module.exports = router 

@@ -8,6 +8,8 @@ const { connectToDatabase } = require("../../../services/mongodb/connection");
 
 module.exports = {
   signup: async (req, res) => {
+    console.log("Request hdgg")
+    return
     try {
       connectToDatabase(config.HRGIG_MONGODB_URI);
       const { fullName, organisationName, email, password } = req.body;

@@ -1,12 +1,15 @@
 const axios = require('axios');
 const { completeHRgigRegistration } = require('../hrgig-controllers/utils/auth.utils');
+const requestComingFrom = require('./utils');
 
 module.exports = async (req, res) => {
   try {
     let client 
     let secret
-    const {requestFrom,uri,code} = req.body
+    const {uri,code} = req.body
     const redirecturi = `${uri}/linkedin`;
+    
+    const requestFrom = await requestComingFrom(req, res);
 
     switch (requestFrom) {
       case "mapout":

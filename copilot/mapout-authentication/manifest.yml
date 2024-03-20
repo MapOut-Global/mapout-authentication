@@ -52,6 +52,8 @@ variables:                    # Pass environment variables as key value pairs.
  MAPOUT_LINKEDIN_SECRET : "Kh018UwJZ6autJOU"
  HRGIG_LINKEDIN_CLIENT: "77jdxl9y1amai1"
  HRGIG_LINKEDIN_SECRET: "xhTriIHQW3IGohql"
+ MAPOUT_API_KEY: "b6389f99-f875-473a-93f7-a873a6f9ebea"
+ HRGIG_API_KEY: "a6389f88-d865-473a-93sw-a873a6f9asdf"
 
 #secrets:                      # Pass secrets from AWS Systems Manager (SSM) Parameter Store.
 #  GITHUB_TOKEN: GITHUB_TOKEN  # The key is the name of the environment variable, the value is the name of the SSM parameter.

@@ -5,7 +5,7 @@ const linkedin_Oauth = require('../controllers/social_login/linkedin_Oauth');
 
 const router = express.Router();
 
-router.post('/auth/google', googleAuth );
+router.post('/auth/google', googleAuth);
 router.post('/auth/apple', appleAuth);
 router.post('/auth/linkedin',linkedin_Oauth)
 

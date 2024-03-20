@@ -1,11 +1,11 @@
 const projects = [
     {
         name: 'mapout',
-        apiKey: 'mapout-api-key',
+        apiKey: process.env.MAPOUT_API_KEY,
     },
     {
         name: 'hrgig',
-        apiKey: 'hrgig-api-key',
+        apiKey: process.env.HRGIG_API_KEY,
     },
 ];
 
@@ -36,4 +36,7 @@ const authMiddleware = (req, res, next) => {
     next(); 
 };
 
-module.exports = authMiddleware;
+module.exports = {
+    projects,
+    authMiddleware
+};

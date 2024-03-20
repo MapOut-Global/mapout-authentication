@@ -10,7 +10,7 @@ const { completeRegistration } = require("./utils/auth.utils");
 module.exports = {
   request: async (req, res) => {
     try {
-      const { email, phoneNumber, source  } = req.body;
+      const { email, phoneNumber } = req.body;
       const useStaticOtp = false;
       if(email === "invalid@mapout.com") res.status(200).send({ validUser: false });
 
@@ -33,24 +33,14 @@ module.exports = {
 
   complete: async (req, res) => {
     try {
-      const { email, phoneNumber, otp, name, deviceToken, requestFrom } = req.body; 
+      const { email, phoneNumber, otp, name, deviceToken } = req.body; 
      
       if (email) await verifyEmailOTP({ email, otp });
+      
       if (phoneNumber) await verifySmsOTP({ phoneNumber, otp });
 
-      let registerUser;
-      switch (requestFrom) {
-        case 'app':
-          registerUser = await completeRegistration({email, phoneNumber, name, deviceToken})
-          break;
-  
-        case 'dew':
-          // For dew
-          break;
-  
-        default:
-          break;
-      }
+      const registerUser = await completeRegistration({email, phoneNumber, name, deviceToken})
+     
       res.status(200).send({
         status: true,
         message: "success",

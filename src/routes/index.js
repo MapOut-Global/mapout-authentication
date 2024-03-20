@@ -3,7 +3,7 @@ const router = express.Router();
 const mapoutRoutes = require('./mapout-routes');
 const hrgigRoutes = require('./hrgig-routes');
 const socialLoginRoutes = require('./social-login.routes');
-const authMiddleware = require("../middlewares/authMiddlware");
+const {authMiddleware} = require("../middlewares/authMiddlware");
 
 router.get('/mapout-authentication', (req, res) => res.send("Mapout - Authentication"))
 

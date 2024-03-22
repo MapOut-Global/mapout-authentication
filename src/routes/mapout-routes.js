@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/auth/otp/start', request);
 router.post('/auth/otp/candidate/complete', complete);
 
-router.post('/auth/signup/email', signup );
-router.post('/auth/signin/email', signin );
+router.post('/auth/employer/signup', signup );
+router.post('/auth/employer/signin', signin );
 
 module.exports = router;

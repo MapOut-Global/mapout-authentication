@@ -1,6 +1,7 @@
 const Jwt = require("jsonwebtoken");
 const jwksClient = require("jwks-rsa");
 const { completeRegistration } = require("../mapout-controllers/otp_login/utils/auth.utils");
+const requestComingFrom = require("./utils");
 
 const appleUrl = jwksClient({
   jwksUri: "https://appleid.apple.com/auth/keys",
@@ -49,7 +50,9 @@ const verifyAppleIdentityToken = async (identityToken, user) => {
 module.exports = {
   appleAuth: async (req, res) => {
     try {
-      const { requestFrom, deviceToken, appleAuthRequestResponse } = await req.body;
+      const requestFrom = await requestComingFrom(req, res);
+
+      const { deviceToken, appleAuthRequestResponse } = await req.body;
 
       const { identityToken, user } = appleAuthRequestResponse;
       const userInfo = await verifyAppleIdentityToken(identityToken, user);
@@ -58,7 +61,7 @@ module.exports = {
       if (email_verified) {
         let registerUser;
         switch (requestFrom) {
-          case "app":
+          case "mapout":
             registerUser = await completeRegistration({
               email,
               name,

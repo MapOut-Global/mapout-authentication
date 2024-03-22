@@ -365,6 +365,7 @@ const userArchiveSchema = new Schema(
       dailyStreakCount: { type: Number, default:0 },
     },
     isDeactivated: { type: Boolean, default: false },
+    reasonToDelete:{ type: String},
     profilePdf: {type:String}
   },
   { toJSON: { virtuals: true } },

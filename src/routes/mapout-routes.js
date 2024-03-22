@@ -14,7 +14,7 @@ router.post('/auth/employer/signin', signin );
 
 /**Acc Management */
 router.put("/auth/acc_manage/deactivate/:userId", acc_deactivate);
-router.post('/auth/acc_manage/delete/otp/send', request);
+router.post('/auth/acc_manage/otp/send', request);
 router.delete("/auth/acc_manage/delete/:userId", acc_delete);
 
 module.exports = router;

@@ -8,13 +8,12 @@ module.exports = {
   acc_delete: async (req, res) => {
     try {
       connectToDatabase(config.MAPOUT_MONGODB_URI);
-      const { email, phoneNumber, otp } = req.body;
+      const { email, phoneNumber, otp, reasonToDelete } = req.body;
 
       if (email) await verifyEmailOTP({ email, otp });
       if (phoneNumber) await verifySmsOTP({ phoneNumber, otp });
 
       const userId = req.params.userId;
-
       const user = await User.findById(userId);
 
       if (!user) {
@@ -22,7 +21,7 @@ module.exports = {
       }
 
       const archivedUser = new UserArchive(user.toObject());
-
+      archivedUser.reasonToDelete = reasonToDelete;
       await archivedUser.save();
 
       await User.findByIdAndDelete(userId);

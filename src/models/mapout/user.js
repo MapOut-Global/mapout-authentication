@@ -75,7 +75,6 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: true,
     },
     verified: {
       type: Boolean,
@@ -88,8 +87,7 @@ const userSchema = new Schema(
       type: [{ type: "ObjectId", ref: "Education" }],
     },
     country_code: {
-      type: Schema.Types.ObjectId,
-      ref: "CountryCode",
+      type: Number,
     },
     contact_number: {
       type: Number,

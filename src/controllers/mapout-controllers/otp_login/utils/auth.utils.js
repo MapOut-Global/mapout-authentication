@@ -14,6 +14,7 @@ const UserSetting = require("../../../../models/mapout/userSettings");
 const completeRegistration = async ({
   email,
   phoneNumber,
+  country_code,
   name,
   deviceToken,
   isSocialLoggedin,
@@ -60,6 +61,7 @@ const completeRegistration = async ({
         isRequestFromOtp: isSocialLoggedin ? false : true,
         isSocialLoggedin: isSocialLoggedin,
         name,
+        country_code,
         lastUpdate: UpdateStatus.Verified,
       };
 
@@ -93,6 +95,7 @@ const completeRegistration = async ({
         email: email || null,
         lastUpdate: userData?.lastUpdate || null,
         mobile: userData?.mobile || null,
+        country_code:userData.country_code || null,
         token,
         isCreated: isUserCreated,
       },
@@ -132,6 +135,7 @@ const registerUser = async (data, socialSource) => {
 
     const mongooseData = {
       ...userIdentification,
+      country_code:usrData.country_code,
       password: usrData.password,
       name: usrData.name,
       role_id: usrData.role,

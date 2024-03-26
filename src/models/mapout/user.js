@@ -105,7 +105,8 @@ const userSchema = new Schema(
       type: String,
     },
     profileVideo: {
-      type: String,
+        link:{type: String},
+        thumbnail:{type:String}
     },
     current_location: {
       type: String,
